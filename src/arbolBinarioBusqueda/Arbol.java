@@ -25,7 +25,6 @@ public class Arbol<T extends Comparable<T>> {
         this.nodoRaiz = nodoRaiz;
     }
     
-    
     /**
      * Get the value of nodoRaiz
      *
@@ -60,14 +59,46 @@ public class Arbol<T extends Comparable<T>> {
         if(nodoAVerificar.getDato() == valorBuscado){
             return true;
         }
-        /*Usamos compareTo para comocer si el valorBuscado(que arriba especificamos que debe heredar la interfaz Comparable<T>)
+        /*Usamos compareTo para comocer si el valorBuscado(que arriba especificamos que DEBE heredar la interfaz Comparable<T>)
         es menor que el dato del nodo que estamos verificando. CompareTo devuelve -1 si es menor, 0 si es igual y 1 si el valor es mayor
-        al que se está comparando
+        al que se está comparando.
         */
         else if((valorBuscado.compareTo(nodoAVerificar.getDato()))<0){
+            // Si es menor que el valor que estamos comparamos, procederemos a hacer la búsqueda en el nodo izquiedo.
             return existeNodo(nodoAVerificar.getNodoIzquierda(), valorBuscado);
         }else{
             return existeNodo(nodoAVerificar.getNodoDerecha(), valorBuscado);
+        }
+    }
+    
+    public void insertarNodo(T dato){
+            if(this.nodoRaiz == null){
+                // Si el nodo raiz no existe, se añade el dato como un nodo raiz que no tiene "de momento" subárbol derecho o izquierdo.
+                this.nodoRaiz = new Nodo(dato);
+            }else{
+                // Si el árbol tiene raiz, entonces procederemos a ejecutar el método recursivo de insertar
+                insertarNodo(nodoRaiz,dato);
+            }
+        }
+    
+    public void insertarNodo(Nodo<T> nodoPadre, T dato){
+        // Si el dato es menor que el dato del nodoPadre, deberá añadirse al lado izquierdo del árbol.
+        if(dato.compareTo(nodoPadre.getDato())<0){
+            // Si el nodo izquierdo es nulo(no existen más elementos para compararlo), entonces añado el nuevo dato como un nodo hoja de dicho padre.
+            if(nodoPadre.getNodoIzquierda()==null){
+                nodoPadre.setNodoIzquierda(new Nodo(dato));
+            }else{
+                // Si no está vacío el nodo izquierdo, procedemos a realizar el mismo método pero con el nodo izquierdo tratado como el "padre".
+                this.insertarNodo(nodoPadre.getNodoIzquierda(), dato);
+            }
+        }else if(dato.compareTo(nodoPadre.getDato())>0){
+            if(nodoPadre.getNodoDerecha() == null){
+                nodoPadre.setNodoDerecha(new Nodo(dato));
+            }else{
+                this.insertarNodo(nodoPadre.getNodoDerecha(), dato);
+            }
+        }else{
+            System.out.println("Los nodos son iguales. No pueden existir nodos duplicados");
         }
     }
     

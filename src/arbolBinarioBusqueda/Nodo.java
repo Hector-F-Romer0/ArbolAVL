@@ -21,6 +21,11 @@ public class Nodo<T extends Comparable<T>> {
 
     public Nodo() {
     }
+    
+    // Constructor para un nodo hoja
+    public Nodo(T dato) {
+        this.dato = dato;
+    }
 
     public Nodo(T dato, Nodo nodoIzquierda, Nodo nodoDerecha) {
         this.dato = dato;
