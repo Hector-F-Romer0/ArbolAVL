@@ -27,7 +27,7 @@ public class Nodo<T extends Comparable<T>> {
         this.dato = dato;
     }
 
-    public Nodo(T dato, Nodo nodoIzquierda, Nodo nodoDerecha) {
+    public Nodo(T dato, Nodo<T> nodoIzquierda, Nodo<T> nodoDerecha) {
         this.dato = dato;
         this.nodoIzquierda = nodoIzquierda;
         this.nodoDerecha = nodoDerecha;
@@ -89,6 +89,7 @@ public class Nodo<T extends Comparable<T>> {
     public void setNodoIzquierda(Nodo nodoIzquierda) {
         this.nodoIzquierda = nodoIzquierda;
     }
+
 
     @Override
     public String toString() {
