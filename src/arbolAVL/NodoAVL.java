@@ -14,7 +14,7 @@ public class NodoAVL<T extends Comparable<T>>{
     
     private T dato;
     private NodoAVL<T> nodoAVLIzquierda, nodoAVLDerecha;
-    private int factorDeEquilibrio;
+    private int altura, factorDeEquilibrio;
 
     public NodoAVL() {
     }
@@ -22,12 +22,6 @@ public class NodoAVL<T extends Comparable<T>>{
     // Constructor para un nodo hoja
     public NodoAVL(T dato) {
         this.dato = dato;
-    }
-
-    public NodoAVL(T dato, NodoAVL<T> nodoIzquierda, NodoAVL<T> nodoDerecha) {
-        this.dato = dato;
-        this.nodoAVLIzquierda = nodoIzquierda;
-        this.nodoAVLDerecha = nodoDerecha;
     }
 
     /**
@@ -47,8 +41,7 @@ public class NodoAVL<T extends Comparable<T>>{
     public void setDato(T dato) {
         this.dato = dato;
     }
-
-    
+ 
     /**
      * Get the value of nodoDerecha
      *
@@ -66,9 +59,7 @@ public class NodoAVL<T extends Comparable<T>>{
     public void setNodoAVLDerecha(NodoAVL nodoDerecha) {
         this.nodoAVLDerecha = nodoDerecha;
     }
-
-    
-    
+  
     /**
      * Get the value of nodoIzquierda
      *
@@ -86,8 +77,26 @@ public class NodoAVL<T extends Comparable<T>>{
     public void setNodoAVLIzquierda(NodoAVL nodoIzquierda) {
         this.nodoAVLIzquierda = nodoIzquierda;
     }
-    
-        /**
+
+    /**
+     * Get the value of altura
+     *
+     * @return the value of altura
+     */
+    public int getAltura() {
+        return altura;
+    }
+
+    /**
+     * Set the value of altura
+     *
+     * @param altura new value of altura
+     */
+    public void setAltura(int altura) {
+        this.altura = altura;
+    }
+
+    /**
      * Get the value of factorDeEquilibrio
      *
      * @return the value of factorDeEquilibrio
@@ -107,6 +116,6 @@ public class NodoAVL<T extends Comparable<T>>{
 
     @Override
     public String toString() {
-        return "NodoAVL{" + "dato=" + dato + ", nodoAVLIzquierda=" + nodoAVLIzquierda + ", nodoAVLDerecha=" + nodoAVLDerecha + ", factorDeEquilibrio=" + factorDeEquilibrio + '}';
+        return "NodoAVL{" + "dato=" + dato + ", nodoAVLIzquierda=" + nodoAVLIzquierda + ", nodoAVLDerecha=" + nodoAVLDerecha + ", altura=" + altura + ", factorDeEquilibrio=" + factorDeEquilibrio + '}';
     }
 }

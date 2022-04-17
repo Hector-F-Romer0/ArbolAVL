@@ -70,8 +70,6 @@ public class Nodo<T extends Comparable<T>> {
         this.nodoDerecha = nodoDerecha;
     }
 
-    
-    
     /**
      * Get the value of nodoIzquierda
      *
