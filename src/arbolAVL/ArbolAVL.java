@@ -92,9 +92,6 @@ public class ArbolAVL<T extends Comparable<T>> {
         ajustarAlturayFE(nodoPadre);
 
         ajustarBalanceo(nodoPadre);
-        
-        
-        
     }
     
     public void ajustarAlturayFE(NodoAVL<T> nodoABalancear){
@@ -125,31 +122,39 @@ public class ArbolAVL<T extends Comparable<T>> {
                 rotarIzquierda(nodoABalancear);
             }else{
                 // Si el fe del nodo izquierdo hijo es 1 (posee signo DIFERENTE al fe del padre), se hará una rotación doble a la derecha.
-                // rotarDobleIzquierda(nodoABalancear);
+                nodoABalancear.setNodoAVLIzquierda(rotarDerecha(nodoABalancear.getNodoAVLIzquierda()));
+                nodoABalancear = rotarIzquierda(nodoABalancear);
             }
         } // Si el fe del nodo que rompe con el balanceo es +2, se hará una rotación a la izquierda
         else if(nodoABalancear.getFactorDeEquilibrio() == 2){
             // Si el fe del nodo derecho hijo es -1(menor o igual a 0/posee el mismo signo del fe del padre), se hará una rotación simple a la izquierda
             if(nodoABalancear.getNodoAVLDerecha().getFactorDeEquilibrio() <=0){
-                // rotarDerecha(nodoABalancear)
+                 rotarDerecha(nodoABalancear);
             }else{
                 // Si el fe del nodo derecho hijo es 1 (posee signo DIFERENTE al fe del padre), se hará una rotación doble a la derecha.
-                // rotarDobleDerecha();
+                nodoABalancear.setNodoAVLDerecha(rotarIzquierda(nodoABalancear.getNodoAVLDerecha()));
+		nodoABalancear = rotarDerecha(nodoABalancear);                
             }
         }
     }
-    
-        
+         
     public NodoAVL<T> rotarIzquierda(NodoAVL<T> nodo){
         NodoAVL<T> nodoTemporal = nodo.getNodoAVLIzquierda();
         nodo.setNodoAVLIzquierda(nodoTemporal.getNodoAVLDerecha());
         nodoTemporal.setNodoAVLDerecha(nodo);
-      
-        
-        
-        return nodoTemporal;
-        
+        ajustarAlturayFE(nodo);
+        ajustarAlturayFE(nodoTemporal);
+        return nodoTemporal; 
     }
+    
+    public NodoAVL<T> rotarDerecha(NodoAVL<T> nodo){
+        NodoAVL<T> nodoTemporal = nodo.getNodoAVLDerecha();
+        nodo.setNodoAVLDerecha(nodoTemporal.getNodoAVLIzquierda());
+        nodoTemporal.setNodoAVLIzquierda(nodo);
+        ajustarAlturayFE(nodo);
+        ajustarAlturayFE(nodoTemporal);
+        return nodoTemporal;
+    }  
         
     private int calcularFactorEquilibrio(NodoAVL nodo){
         //Si el nodo es vacío, quiere decir que se refiere al nodo raíz que se inserta por primera vez. Por lo tanto, su factor de equilibrio será 0
