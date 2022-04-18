@@ -9,7 +9,7 @@ package arbolrojonegro;
  *
  * @author Hector Fabio Romero
  */
-public class ArbolRojoNegro {
+public class ArbolAVL {
 
     /**
      * @param args the command line arguments

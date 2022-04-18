@@ -6,13 +6,25 @@
 package arbolAVL;
 
 /**
+ * Clase encargada de gestionar los nodosAVL en su interior.
  *
- * @author Hector Fabio Romero
+ * @author juliana.loaiza@uao.edu.co Juliana Loaiza Mejia Código 2205498
+ * @author hector_fabio.romero@uao.edu.co Hector Fabio Romero Bocanegra Código 2205024
+ * @author andres.aristizabal_m@uao.edu.co Andrés Felipe Aristizabal Miranda Código 2205296
+ * @date 15 abril 2022
+ * @version 1.0
  */
 public class ArbolAVL<T extends Comparable<T>> {
     
-    private NodoAVL nodoRaizAVL;
+    private NodoAVL<T> nodoRaizAVL;
 
+    public ArbolAVL() {
+    }
+
+    public ArbolAVL(NodoAVL<T> nodoRaizAVL) {
+        this.nodoRaizAVL = nodoRaizAVL;
+    }
+    
     /**
      * Get the value of nodoRaizAVL
      *
@@ -30,7 +42,54 @@ public class ArbolAVL<T extends Comparable<T>> {
     public void setNodoRaizAVL(NodoAVL nodoRaizAVL) {
         this.nodoRaizAVL = nodoRaizAVL;
     }
+    
+    public String recorridoInOrder(NodoAVL<T> node) {
+        if (node == null) {
+            return "Null";
+        } else {
+            String c = "";
+            if (node.getNodoAVLIzquierda() != null) {
+                c += recorridoInOrder(node.getNodoAVLIzquierda());
+            }
+            c += "" + node.getDato() +"\n";
+            System.out.printf("%s ", node.getDato());
+            if (node.getNodoAVLDerecha() != null) {
+                c += recorridoInOrder(node.getNodoAVLDerecha());
+            }
+            return c;
+        }
+    }
 
+    public String preOrder(NodoAVL<T> node) {
+        String c = "";
+        if (node != null) {
+            c += node.getDato();
+            if (node.getNodoAVLIzquierda() != null) {
+                c += recorridoInOrder(node.getNodoAVLIzquierda());
+            }
+            if (node.getNodoAVLDerecha() != null) {
+                c += recorridoInOrder(node.getNodoAVLDerecha());
+            }
+        }
+        return c;
+    }
+
+    public String postOrder(NodoAVL<T> node) {
+        String c = "";
+        if (node != null) {
+            if (node.getNodoAVLIzquierda() != null) {
+                c += recorridoInOrder(node.getNodoAVLIzquierda());
+            }
+            if (node.getNodoAVLDerecha() != null) {
+                c += recorridoInOrder(node.getNodoAVLDerecha());
+            }
+            c += node.getDato();
+        }
+        return c;
+    }
+    
+    
+    
     public boolean existeNodo(T valorBuscado){
         //Este primer método será el que desencadene la búsqueda.
         return existeNodo(this.nodoRaizAVL,valorBuscado);
@@ -90,7 +149,6 @@ public class ArbolAVL<T extends Comparable<T>> {
         }     
         // Se llama al método que actualizará la altura y factor de balanceo de los nodos.
         ajustarAlturayFE(nodoPadre);
-
         ajustarBalanceo(nodoPadre);
     }
     
@@ -156,7 +214,7 @@ public class ArbolAVL<T extends Comparable<T>> {
         return nodoTemporal;
     }  
         
-    private int calcularFactorEquilibrio(NodoAVL nodo){
+    private int calcularFactorEquilibrio(NodoAVL<T> nodo){
         //Si el nodo es vacío, quiere decir que se refiere al nodo raíz que se inserta por primera vez. Por lo tanto, su factor de equilibrio será 0
         int factorCalculado;
         if(nodo==null){
@@ -168,5 +226,73 @@ public class ArbolAVL<T extends Comparable<T>> {
         return factorCalculado;
     }
    
+    public void eliminarNodo(T datoAEliminar){
+        eliminarNodo(nodoRaizAVL, datoAEliminar);
+    }
+    
+    public NodoAVL<T> eliminarNodo(NodoAVL<T> nodoPadre, T datoAEliminar){
+        if(nodoPadre== null){
+            return nodoPadre;
+        }
+        // Si el dato es menor que el dato del nodoPadre, deberá añadirse al lado izquierdo del árbol.
+        if(datoAEliminar.compareTo(nodoPadre.getDato())<0){
+            //Si el dato es menor que el dato del nodo padre, cambiaremos el valor del nodo hijo izquierdo por medio de un llamado recursivo al método eliminar
+            nodoPadre.setNodoAVLIzquierda(eliminarNodo(nodoPadre.getNodoAVLDerecha(), datoAEliminar));
+        }else if(datoAEliminar.compareTo(nodoPadre.getDato())>0){
+            nodoPadre.setNodoAVLDerecha(eliminarNodo(nodoPadre.getNodoAVLDerecha(), datoAEliminar));
+        }else{
+           // Cuando el dato del nodo sea igual a la clave pasada como parámetro se evaluarán los siguientes casos:
+           
+           // Si el nodo posee un único hijo o es hoja, se evaluará que:
+           if((nodoPadre.getNodoAVLDerecha()!= null)||(nodoPadre.getNodoAVLIzquierda()!=null)){
+               NodoAVL<T> nodoTemporal = null;
+               
+               // Si el hijo izquierdo del nodo padre es nulo, guardo el valor del hijo derecho (se supone que debe tener si o si un hijo por parte derecha)
+               if(nodoTemporal == nodoPadre.getNodoAVLIzquierda()){
+                   nodoTemporal= nodoPadre.getNodoAVLDerecha();
+               }else{
+                   nodoTemporal = nodoPadre.getNodoAVLIzquierda();
+               }
+               
+               // Si después de verificar que el nodo evaluado no tiene hijos, procedemos a igualar ese nodo con un valor de null para borrarlo
+               if(nodoTemporal == null){
+                   nodoPadre = null;
+               }else{
+                   // Si el nodo a eliminar solo tiene un hijo, se elimina el valor actual por el valor que tendría su hijo.
+                   nodoPadre = nodoTemporal;
+               }   
+           }else{
+               //Si el nodo a eliminar posee dos hijos, debemos identificar cuál de los dos hijos es el predecesor
+               // Predecesor: elemento más grande del subárbol IZQUIERDO
+               NodoAVL<T> nodoTemporal = obtenerNodoConValorMaximo(nodoPadre.getNodoAVLIzquierda());
+               
+               // Se copia el dato del predecesor al nodo padre que estamos tratando
+               nodoPadre.setDato(nodoTemporal.getDato());
+               
+               // Procedemos a eliminar el predecesor
+               nodoPadre.setNodoAVLIzquierda(eliminarNodo(nodoPadre.getNodoAVLIzquierda(), nodoTemporal.getDato()));
+           }  
+        }
+        
+        // Si solo tiene un nodo:
+        if(nodoPadre == null){
+            return nodoPadre;
+        }
+        
+        ajustarAlturayFE(nodoPadre);
+        ajustarBalanceo(nodoPadre);
+
+        return nodoPadre;
+    }
+    
+    private NodoAVL obtenerNodoConValorMaximo(NodoAVL<T> nodoAEvaluar) {
+        NodoAVL<T> nodoActual = nodoAEvaluar;
+        
+        while (nodoActual.getNodoAVLDerecha() != null){
+           nodoActual = nodoActual.getNodoAVLDerecha();
+        }
+        
+        return nodoAEvaluar;
+    }
     
 }
